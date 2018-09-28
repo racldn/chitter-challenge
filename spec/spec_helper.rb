@@ -1,7 +1,11 @@
 require 'simplecov'
 require 'simplecov-console'
+require_relative './setup_test_database'
 # Set the environment to "test"
 ENV['RACK_ENV'] = 'test'
+ENV['ENVIRONMENT'] = 'test'
+
+
 
 # Bring in the contents of the `app.rb` file
 require File.join(File.dirname(__FILE__), '..', 'app.rb')
@@ -13,6 +17,14 @@ require 'rspec'
 
 # Tell Capybara to talk to BookmarkManager
 Capybara.app = Chitter
+
+
+
+RSpec.configure do |config|
+  config.before(:each) do
+    setup_test_database
+  end
+end
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
   SimpleCov::Formatter::Console,
